@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>liff demo</title>
+  </head>
+  <body>
+    <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+    <script>
+      function initializeLiff(myLiffId) {
+        liff
+          .init({
+            liffId: myLiffId,
+          })
+          .then(() => {
+            if (!liff.isLoggedIn()) {
+              liff.login();
+            } else {
+              initializeApp();
+            }
+          })
+          .catch((err) => {
+            console.log("err:", err);
+          });
+      }
+
+      function initializeApp() {
+        var data = {
+          accessToken: liff.getAccessToken(),
+        };
+        fetch("https://50ef233ccad3.ap.ngrok.io/login", {
+          method: "POST",
+          body: JSON.stringify(data),
+          headers: {
+            "content-type": "application/json",
+          },
+        })
+          .then((response) => {
+            return response.json();
+          })
+          .then((data) => {
+            console.log(data);
+          });
+      }
+
+      initializeLiff("1653810868-MkKgKnNW");
+    </script>
+  </body>
+</html>
